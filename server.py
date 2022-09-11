@@ -6,6 +6,8 @@ from blacksheep import Application, Request, json, redirect
 from blacksheep.server.templating import use_templates
 from jinja2 import PackageLoader
 from jinja2 import Environment, FileSystemLoader
+import pymysql.cursors
+import get_from_db
 
 
 # app init
@@ -117,6 +119,19 @@ async def t(req):
         # we add -1 to sync with the list index counter
         padlist_paged = padlist[paginate -1]
 
+        # -- setup db connection
+        connection = pymysql.connect(host=os.getenv('DB_HOST'),
+                                     user=os.getenv('DB_USER'),
+                                     password=os.getenv('DB_PASSWORD'),
+                                     db=os.getenv('DB_NAME'),
+                                     charset='utf8mb4',
+                                     cursorclass=pymysql.cursors.DictCursor)
+
+        # get all pad with appropriate data
+        pads_data = get_from_db.get_data(connection, os.getenv('FILTER'), padlist_paged)
+
+        pads = {"count": pads_count,
+                "data": pads_data }
 
         return view('index', {"pads": pads,
                               "pagination": pagination,
