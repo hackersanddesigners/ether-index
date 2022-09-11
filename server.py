@@ -82,6 +82,41 @@ async def t(req):
 
         padlist = list(padlist_data)
 
+        # get eventual page/<id> from route
+        if req.route_values is not None:
+            paginate = int(req.route_values["id"])
+        else:
+            paginate = 0
+
+        # set correct paginate value
+        if paginate == 0:
+            paginate_UI = paginate +1
+        else:
+            paginate_UI = paginate
+
+
+        # build pagination object with all necessary data
+        paginate_total = len(padlist)
+        pagination = {'status': "%s / %s" % (paginate_UI, paginate_total),
+                      'page_prev': {'display': False,
+                                    'value': None },
+                      'page_next': {'display': False,
+                                    'value': None }}
+
+        # set correct page-prev/next values
+        # page-prev
+        if paginate_UI > 1:
+            pagination['page_prev'] = {'display': True,
+                                       'value': paginate_UI -1}
+
+        # page-next
+        if paginate_UI < paginate_total:
+            pagination['page_next'] = {'display': True,
+                                       'value': paginate_UI +1}
+            
+        # we add -1 to sync with the list index counter
+        padlist_paged = padlist[paginate -1]
+
 
         return view('index', {"pads": pads,
                               "pagination": pagination,
