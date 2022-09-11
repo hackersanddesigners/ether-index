@@ -40,6 +40,12 @@ def chunks(lst, n):
 
 
 async def t(req):
+    """
+    if GET request return paginated list of pads;
+    if POST request use value sent by form to redirect to
+    that URL and create a new pad
+    """
+
     
     if req.method == 'GET':
 
@@ -145,12 +151,7 @@ async def t(req):
 
 @app.route("/", methods=["GET", "POST"])
 async def page(req: Request):
-    """
-    if GET request return paginated list of pads;
-    if POST request use value sent by form to redirect to
-    that URL and create a new pad
-    """
-    
+        
     return await t(req)
 
 
