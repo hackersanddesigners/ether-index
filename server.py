@@ -8,6 +8,7 @@ from jinja2 import PackageLoader
 from jinja2 import Environment, FileSystemLoader
 import pymysql.cursors
 import get_from_db
+from operator import itemgetter
 
 
 # app init
@@ -136,7 +137,8 @@ async def t(req):
                                      cursorclass=pymysql.cursors.DictCursor)
 
         # get all pad with appropriate data
-        pads_data = get_from_db.get_data(connection, os.getenv('FILTER'), padlist_paged)
+        pads_data = get_from_db.get_data(connection, os.getenv('FILTER'), padlist_res)
+        pads_data = sorted(pads_data, key=itemgetter(1), reverse=True)
 
         pads = {"count": pads_count,
                 "data": pads_data }
