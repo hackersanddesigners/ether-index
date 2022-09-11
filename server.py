@@ -105,7 +105,9 @@ async def t(req):
 
         # build pagination object with all necessary data
         paginate_total = len(padlist)
-        pagination = {'status': "%s / %s" % (paginate_UI, paginate_total),
+
+        pagination = {'display': False,
+                      'status': "%s / %s" % (paginate_UI, paginate_total),
                       'page_prev': {'display': False,
                                     'value': None },
                       'page_next': {'display': False,

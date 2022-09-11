@@ -92,6 +92,7 @@
       <code class="w50 p0-15 lg-w15">authors: {{ pad[3] }}</code>
     </div>
     {% endfor %}
+    {% if pagination['display'] %}
     <nav class="m1">
       {% if pagination['page_prev']['display'] %}
         <a href="/page/{{ pagination['page_prev']['value'] }}">prev</a>
@@ -101,6 +102,7 @@
         <a href="/page/{{ pagination['page_next']['value'] }}">next</a>
       {% endif %}
     </nav>
+    {% endif %}
   </main>
   <footer class="p1 tac">.</footer>
 </body>
