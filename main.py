@@ -1,6 +1,7 @@
 import os
 from dotenv import load_dotenv
 load_dotenv()
+import uvicorn
 import requests
 from blacksheep import Application, Request, json, redirect
 from blacksheep.server.templating import use_templates
@@ -13,7 +14,13 @@ from slugify import slugify
 
 
 # app init
-app = Application(show_error_details=True, debug=True)
+env = os.getenv('ENV')
+
+if env == 'development':
+    app = Application(show_error_details=True, debug=True)
+else:
+    app = Application(show_error_details=False, debug=False)
+    
 
 # create view function to read template from root folder
 template_path = os.path.join(os.path.dirname(__file__), './')
@@ -169,3 +176,11 @@ async def page(req: Request):
 async def subpage(req: Request):
 
     return await t(req)
+
+
+
+if __name__ == '__main__':
+    if env == 'development':
+        uvicorn.run('main:app', port=44777, log_level="info", reload=True)
+    else:
+        uvicorn.run('main:app', port=5006, log_level="info")
