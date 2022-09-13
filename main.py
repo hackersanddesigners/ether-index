@@ -176,11 +176,3 @@ async def page(req: Request):
 async def subpage(req: Request):
 
     return await t(req)
-
-
-
-if __name__ == '__main__':
-    if env == 'development':
-        uvicorn.run('main:app', port=44777, log_level="info", reload=True)
-    else:
-        uvicorn.run('main:app', port=5006, log_level="info")
