@@ -9,6 +9,7 @@ from jinja2 import Environment, FileSystemLoader
 import pymysql.cursors
 import get_from_db
 from operator import itemgetter
+from slugify import slugify
 
 
 # app init
@@ -149,8 +150,13 @@ async def t(req):
 
 
     elif req.method == 'POST':
-        
-        return "will redirect to <url> from form etc."
+        data = await req.form() 
+        print('padname =>', data['padname'])
+        padname = slugify(data['padname'])
+
+        ep_url = os.getenv('EP_URL')
+
+        return redirect(ep_url + '/p/' + padname)
 
 
 @app.route("/", methods=["GET", "POST"])
