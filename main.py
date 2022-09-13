@@ -158,7 +158,6 @@ async def t(req):
 
     elif req.method == 'POST':
         data = await req.form() 
-        print('padname =>', data['padname'])
         padname = slugify(data['padname'])
 
         ep_url = os.getenv('EP_URL')
@@ -176,3 +175,14 @@ async def page(req: Request):
 async def subpage(req: Request):
 
     return await t(req)
+
+
+def fallback(req: Request):
+    
+    # maybe it's a bit too much instead of simply using a `/`
+    back_URL = req.scheme + '://' + req.host
+
+    return view('404', {'back_URL': back_URL})
+
+
+app.router.fallback = fallback
