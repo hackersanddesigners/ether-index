@@ -1,5 +1,11 @@
 # ether-index
 
+## intro
+
+this is another take ([see first](https://github.com/hackersanddesigners/ether-index-sql)) at listing all "public" pads from a given Etherpad instance. by "public", we mean a pad containing the keyword `__NOINDEX__` (check below the `.env` section to see how to set this keyword).
+
+generally we use a hybrid approach where we use Etherpad's APIs to fetch a paginated list of pad IDs, then query the SQL database to check whether the pad is public or not, and get a few more info (authors numbers, last update timestamp).
+
 ## setup
 
 - python > 3.6 (currently 3.9)
